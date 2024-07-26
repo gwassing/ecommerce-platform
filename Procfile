@@ -1,1 +1,1 @@
-web: gunicorn gabys-ecommerce-platform.wsgi
+web: gunicorn ecommerce-platform.wsgi
