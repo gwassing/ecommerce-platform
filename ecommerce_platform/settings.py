@@ -85,16 +85,13 @@ WSGI_APPLICATION = 'ecommerce_platform.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
     }
 }
-
-# Update the default database configuration for heroku deployment
-DATABASES['default'].update(dj_database_url.config(conn_max_age=600, ssl_require=True))
+if DEBUG:
+    ssl_require = False
+else:
+    ssl_require = True
+DATABASES['default'].update(dj_database_url.config(conn_max_age=600, ssl_require=ssl_require))
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
