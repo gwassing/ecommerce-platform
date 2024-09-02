@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.db.models import CheckConstraint, Q
+
 PRODUCT_CATEGORIES = {
     "SHOES": "Shoes",
     "CLOTHING": "Clothing",
@@ -17,4 +19,9 @@ class Product (models.Model):
 
     def __str__(self):
         return self.item_name
+
+    class Meta:
+        constraints = [
+            CheckConstraint(check=Q(price__gte=0.01), name='positive_price')
+        ]
 
