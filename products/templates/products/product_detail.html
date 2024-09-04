@@ -6,7 +6,7 @@
     <div>Item name: {{ product.item_name }}</div>
     <div>Price: {{ product.price }} euro</div>
     <div>Brand: {{ product.brand }}</div>
-    <div>Product category: {{ product.category }}</div>
+    <div>Product category: {{ product.get_category_display }}</div>
 {% endblock %}
 
 
