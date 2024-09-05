@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import date
 
@@ -14,7 +15,7 @@ class Product (models.Model):
     category = models.CharField(max_length=50, choices=PRODUCT_CATEGORIES)
     brand = models.CharField(max_length=50)
     item_name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0.0)])
     date_created = models.DateField(default=date.today)
     image = models.ImageField(upload_to="images/", null=True, blank=True)
 
