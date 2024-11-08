@@ -1,0 +1,11 @@
+{% extends 'products/base.html' %}
+{% block content %}
+<h2>PRODUCT LIST VIEW</h2>
+{% for product in products %}
+    {% if product %}
+        <a href="{% url 'product_detail' product.pk %}" style="display: block; padding: 10px">
+            {{ product.item_name }}
+        </a>
+    {% endif %}
+{% endfor %}
+{% endblock %}
