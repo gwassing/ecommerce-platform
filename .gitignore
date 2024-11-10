@@ -17,6 +17,8 @@ staticfiles/*
 # Media folder at project root
 media/
 
+node_modules/
+
 # macOS
 ._*
 .DS_Store
