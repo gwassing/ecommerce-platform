@@ -163,7 +163,7 @@ else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'ecommerce_platform', 'static')]
 
 CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost:8000']
 
