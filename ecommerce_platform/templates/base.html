@@ -5,11 +5,28 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Gabylando</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
+{% block navbar %}
+    <div class="flex items-center justify-between">
+        <a href="{% url "index" %}">
+            <img src="{% static 'svgs/logo.svg' %}" alt="" width="160" height="35">
+        </a>
+        <div class="flex gap-10">
+            <a href="{% url 'product_list' %}">All products</a>
+            <a href="#">Brands</a>
+            <a href="#">Categories</a>
+            <a href="#">Deals</a>
+        </div>
+        <div class="flex gap-10">
+            <a href="#">Account</a>
+            <a href="#">Cart</a>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
 {% endblock content %}
 </body>

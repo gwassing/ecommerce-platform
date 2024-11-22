@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    padding: 24px;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-decoration-color: #FF70FF;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 4px;
+}

@@ -632,6 +632,10 @@ video {
   display: block;
 }
 
+.flex {
+  display: flex;
+}
+
 .table {
   display: table;
 }
@@ -660,6 +664,18 @@ video {
   align-content: flex-start;
 }
 
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-10 {
+  gap: 2.5rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -670,4 +686,15 @@ video {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  padding: 24px;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-decoration-color: #FF70FF;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
 }
