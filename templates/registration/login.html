@@ -2,7 +2,14 @@
 {% block navbar %}
 {% endblock %}
 {% block content %}
-    <h2>Log in</h2>
+    <div class="card" style="max-width: 400px">
+        <h2 class="text-2xl text-center">Log in</h2>
+        <form method="post" id="login-form">
+            {% csrf_token %}
+            {{ form }}
+        </form>
+        <button type="submit" class="block mx-auto" form="login-form">Log in</button>
+    </div>
 {% endblock %}
 
 

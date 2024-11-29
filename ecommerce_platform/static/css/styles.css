@@ -628,6 +628,11 @@ video {
   position: sticky;
 }
 
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .block {
   display: block;
 }
@@ -680,6 +685,15 @@ video {
   border-width: 1px;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
@@ -698,3 +712,39 @@ a:hover {
   text-decoration-thickness: 3px;
   text-underline-offset: 4px;
 }
+
+button {
+  background-color: #FEA520;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+form div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+input[type=text], input[type=password] {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+label {
+  display: block;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+}
+
