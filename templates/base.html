@@ -11,7 +11,7 @@
 </head>
 <body>
 {% block navbar %}
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between pb-6">
         <a href="{% url "index" %}">
             <img src="{% static 'svgs/logo.svg' %}" alt="" width="160" height="35">
         </a>
@@ -22,8 +22,14 @@
             <a href="#">Deals</a>
         </div>
         <div class="flex gap-10">
-
-            <a href="{% url 'login' %}">Account</a>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                    <button class="logout" type="submit">Log out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Log in</a>
+            {% endif %}
             <a href="#">Cart</a>
         </div>
     </div>

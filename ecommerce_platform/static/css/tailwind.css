@@ -6,24 +6,21 @@ body {
     padding: 24px;
 }
 
-a:hover {
+a:hover, .logout:hover {
     text-decoration: underline;
     text-decoration-color: #FF70FF;
     text-decoration-thickness: 3px;
     text-underline-offset: 4px;
 }
 
-button {
+.button {
     background-color: #FEA520;
     padding: 8px 12px;
     border-radius: 8px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin: 24px 0;
+.button:hover{
+    background-color: #FEAD34;
 }
 
 form div{

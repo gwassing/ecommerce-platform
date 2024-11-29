@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+    {% if user.is_authenticated %}
+        <div>Hello {{ user.username }}, you are now logged in!</div>
+    {% else %}
+        <div>You are now logged out</div>
+    {% endif %}
 {% endblock %}
