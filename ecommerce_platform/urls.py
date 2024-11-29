@@ -25,6 +25,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name="index"),
     path('products/', include("products.urls")),
     path('admin/', admin.site.urls),
+    path('accounts/', include("django.contrib.auth.urls")),
 ]
 
 # Serve media files during development
