@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+    <div class="card" style="max-width: 400px">
+        <h2 class="text-2xl text-center">Register a new account</h2>
+        <form method="post" id="registration-form" class="flex flex-col gap-2 m-6">
+            {% csrf_token %}
+            {{ form }}
+        </form>
+        <button type="submit" class="button block mx-auto" form="registration-form">Register</button>
+        <p class="text-center pt-4">Already have an account? <a href="{% url 'login' %}">Log in here</a></p>
+    </div>
+{% endblock %}
+
+
