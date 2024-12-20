@@ -1,5 +1,15 @@
 from django.contrib import admin
 
-from products.models import Product
+from products import models
 
-admin.site.register(Product)
+
+class ProductImageInline(admin.TabularInline):
+    model = models.ProductImage
+
+
+@admin.register(models.Product)
+class ProductAdmin(admin.ModelAdmin):
+    pass
+    inlines = [
+        ProductImageInline
+        ]

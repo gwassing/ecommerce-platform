@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if product.image %}
-        <img src="{{ product.image.url }}" alt="">
+    {% if product.images.all %}
+        {% for image in product.images.all %}
+            <img src="{{ image.image.url }}" alt="">
+        {% endfor %}
     {% endif %}
     <div>Item name: {{ product.item_name }}</div>
     <div>Price: {{ product.price }} euro</div>
