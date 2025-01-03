@@ -17,25 +17,27 @@
             <img src="{% static 'svgs/logo.svg' %}" alt="" width="160" height="35">
         </a>
         <div class="flex gap-10">
-            <a href="{% url 'product_list' %}">All products</a>
-            <a href="#">Brands</a>
-            <a href="#">Categories</a>
-            <a href="#">Deals</a>
+            <a href="{% url 'product_list' %}" class="nav-link">All products</a>
+            <a href="#" class="nav-link">Brands</a>
+            <a href="#" class="nav-link">Categories</a>
+            <a href="#" class="nav-link">Deals</a>
         </div>
         <div class="flex gap-10">
             {% if user.is_authenticated %}
                 <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                    <button class="logout" type="submit">Log out</button>
+                    {% csrf_token %}
+                    <button class="nav-link" type="submit">Log out</button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}">Log in</a>
+                <a href="{% url 'login' %}" class="nav-link">Log in</a>
             {% endif %}
-            <a href="#">Cart</a>
+            <a href="#" class="nav-link">Cart</a>
         </div>
     </div>
 {% endblock %}
-{% block content %}
-{% endblock content %}
+<div style="max-width:1200px; margin: 50px auto">
+    {% block content %}
+    {% endblock content %}
 </body>
+</div>
 </html>
