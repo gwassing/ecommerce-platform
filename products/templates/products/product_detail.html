@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if product.images.all %}
-        {% for image in product.images.all %}
-            <img src="{{ image.image.url }}" alt="">
-        {% endfor %}
-    {% endif %}
-    <div>Item name: {{ product.item_name }}</div>
-    <div>Price: {{ product.price }} euro</div>
-    <div>Brand: {{ product.brand }}</div>
-    <div>Product category: {{ product.get_category_display }}</div>
+    <div class="grid grid-cols-2">
+        <div class="mx-auto">
+            {% if product.images.all %}
+                {% for image in product.images.all %}
+                    <img src="{{ image.image.url }}" alt="" style="width: 400px">
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="flex flex-col gap-y-2 ml-5">
+            <p class="capitalize text-xl">{{ product.brand }}</p>
+            <p class="capitalize text-3xl font-semibold">{{ product.item_name }}</p>
+            <div class="text-xl">{{ product.price }} €</div>
+        </div>
+    </div>
 {% endblock %}
 
 
