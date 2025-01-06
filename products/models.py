@@ -1,6 +1,8 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import date
+from django.contrib.postgres.fields import ArrayField
+
 
 from django.db.models import CheckConstraint, Q
 
@@ -17,6 +19,7 @@ class Product (models.Model):
     item_name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0.0)])
     date_created = models.DateField(default=date.today)
+    colors = ArrayField(models.CharField(max_length=100), null=True, blank=True, default=list)
 
     def __str__(self):
         return self.item_name
