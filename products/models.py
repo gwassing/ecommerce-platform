@@ -6,7 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 
 from django.db.models import CheckConstraint, Q
 from django.dispatch import receiver
-from django.db.models.signals import post_delete
+from django.db.models.signals import pre_delete
 
 PRODUCT_CATEGORIES = {
     "SHOES": "Shoes",
@@ -37,7 +37,7 @@ class ProductImage(models.Model):
     image = models.ImageField(upload_to="images/")
 
 
-@receiver(post_delete, sender=ProductImage)
+@receiver(pre_delete, sender=ProductImage)
 def delete_s3_image(sender, instance, **kwargs):
     # delete image on s3 when product image is deleted
     print(f"deleted: {instance.image.name}")
