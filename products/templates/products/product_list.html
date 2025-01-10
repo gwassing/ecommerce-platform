@@ -3,7 +3,6 @@
     <h1 class="text-4xl pb-5">All products</h1>
     <div class="grid grid-cols-4 gap-x-5 gap-y-12">
         {% for product in products %}
-            {% if product %}
                 <a href="{% url 'product_detail' product.pk %}" class="flex flex-col mx-auto">
                     {% if product.images %}
                         <img src="{{ product.images.first.image.url }}" alt="" class="mx-auto" style="height:300px">
@@ -13,7 +12,6 @@
                         <p>{{ product.price }} €</p>
                     </div>
                 </a>
-            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
