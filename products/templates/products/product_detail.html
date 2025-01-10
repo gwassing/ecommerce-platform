@@ -2,9 +2,9 @@
 {% block content %}
     <div class="grid grid-cols-2">
         <div class="mx-auto">
-            {% if product.images.all %}
-                {% for image in product.images.all %}
-                    <img src="{{ image.image.url }}" alt="" style="width: 400px">
+            {% if images %}
+                {% for obj in images %}
+                    <img src="{{ obj.image.url }}" alt="" style="width: 400px">
                 {% endfor %}
             {% endif %}
         </div>
