@@ -10,7 +10,6 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
-    pass
     inlines = [
         ProductImageInline
-        ]
+    ]
