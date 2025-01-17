@@ -12,14 +12,7 @@
             <p class="capitalize text-xl">{{ product.brand }}</p>
             <p class="capitalize text-3xl font-semibold">{{ product.item_name }}</p>
             <p class="text-xl">{{ product.price }} €</p>
-            <p>
-                Available colours:
-                {% for color in product.colors %}
-                    {{ color }}
-                {% endfor %}
-            </p>
         </div>
     </div>
 {% endblock %}
-
 
