@@ -17,7 +17,7 @@
             <img src="{% static 'svgs/logo.svg' %}" alt="" width="160" height="35">
         </a>
         <div class="flex gap-10">
-            <a href="{% url 'product_list' %}" class="nav-link">All products</a>
+            <a href="{% url 'products:product_list' %}" class="nav-link">All products</a>
             <a href="#" class="nav-link">Brands</a>
             <a href="#" class="nav-link">Categories</a>
             <a href="#" class="nav-link">Deals</a>
@@ -38,6 +38,6 @@
 <div style="max-width:1200px; margin: 70px auto">
     {% block content %}
     {% endblock content %}
-</body>
 </div>
+</body>
 </html>
