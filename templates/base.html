@@ -31,7 +31,7 @@
             {% else %}
                 <a href="{% url 'login' %}" class="nav-link">Log in</a>
             {% endif %}
-            <a href="#" class="nav-link">Cart</a>
+            <a href="{% url 'cart:cart' %}" class="nav-link">Cart</a>
         </div>
     </div>
 {% endblock %}

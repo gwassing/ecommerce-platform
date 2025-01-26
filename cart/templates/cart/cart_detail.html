@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="text-4xl pb-5">Your bag ({{ total_items }} items)</h1>
+    <table class="p-3" style="width:60%">
+        <tr>
+            <th class="text-left pb-4">
+                Product
+            </th>
+            <th class="text-left pb-4">
+                Price
+            </th>
+        </tr>
+        {% for item in cart_items %}
+            <tr>
+                <td class="pb-2">{{ item }}</td>
+                <td class="pb-2">{{ item.product.price }} €</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
