@@ -11,7 +11,7 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=False)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=False, related_name='cart_items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
