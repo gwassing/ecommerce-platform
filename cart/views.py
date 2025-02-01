@@ -13,9 +13,10 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         cart_items = self.object.cart_items.all().select_related('product')
+        total_price = sum(item.product.price for item in cart_items)
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart_items,
             "total_items": cart_items.count(),
-            "total_price": self.object.get_total_price()
+            "total_price": total_price
         }
