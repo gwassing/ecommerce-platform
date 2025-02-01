@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1 class="text-4xl pb-5">Your bag ({{ total_items }} items)</h1>
-    <table class="p-3" style="width:60%">
-        <tr>
-            <th class="text-left pb-4">
-                Product
-            </th>
-            <th class="text-left pb-4">
-                Price
-            </th>
-        </tr>
+    <h1 class="text-4xl mb-14">Your bag ({{ total_items }} item{{ total_items|pluralize }})</h1>
+    <div style="display:grid; grid-template-columns: minmax(min-content, 350px) fit-content(100%); gap:20px">
+        <p style="font-weight: bold">Item</p>
+        <p style="font-weight: bold">Price</p>
         {% for item in cart_items %}
-            <tr>
-                <td class="pb-2">{{ item }}</td>
-                <td class="pb-2">{{ item.product.price }} €</td>
-            </tr>
+            <p>{{ item }}</p>
+            <p style="">{{ item.product.price }} €</p>
         {% endfor %}
-    </table>
+        <p style="font-weight: bold">Total:</p>
+        <p style="font-weight: bold">{{ total_price }} €</p>
+    </div>
 {% endblock %}

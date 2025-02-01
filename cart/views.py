@@ -16,5 +16,6 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart_items,
-            "total_items": cart_items.count()
+            "total_items": cart_items.count(),
+            "total_price": self.object.get_total_price()
         }
