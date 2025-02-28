@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView
 
 from products.models import Product
 

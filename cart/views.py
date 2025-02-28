@@ -1,6 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views import generic
-from . import models
+from django.views.generic import CreateView
+
+from . import models, forms
+from products import models as product_models
 
 
 class CartDetailView(LoginRequiredMixin, generic.DetailView):
@@ -20,3 +25,20 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
             "total_items": cart_items.count(),
             "total_price": total_price
         }
+
+
+class CreateCartItemView(CreateView):
+    model = models.CartItem
+    form_class = forms.CreateCartItemForm
+    success_url = reverse_lazy('cart:cart')
+
+    def form_valid(self, form):
+        cart_item = form.save(commit=False)
+        cart_item.product = get_object_or_404(product_models.Product, id=self.kwargs.get('product_id'))
+        cart_item.cart = models.Cart.objects.get(user=self.request.user)
+
+        cart_item.save()
+
+        return super().form_valid(form)
+
+
