@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1 class="text-4xl mb-14">Your bag ({{ total_items }} item{{ total_items|pluralize }})</h1>
-    <div style="display:grid; grid-template-columns: minmax(min-content, 350px) fit-content(100%); gap:20px">
+    <div style="display:grid; grid-template-columns: minmax(min-content, 350px) fit-content(100%) fit-content(100%); gap:20px; align-items:center">
         <p style="font-weight: bold">Item</p>
         <p style="font-weight: bold">Price</p>
+        <div style="visibility: hidden">empty div</div>
         {% for item in cart_items %}
             <p>{{ item }}</p>
             <p style="">{{ item.product.price }} €</p>
+            <form action="{% url 'cart:remove_from_cart' item.id %}" method="POST">
+                {% csrf_token %}
+                <button class="button">Remove item</button>
+            </form>
         {% endfor %}
         <p style="font-weight: bold">Total:</p>
         <p style="font-weight: bold">{{ total_price }} €</p>

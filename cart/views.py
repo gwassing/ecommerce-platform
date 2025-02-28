@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 
 from . import models, forms
 from products import models as product_models
@@ -41,4 +41,12 @@ class CreateCartItemView(CreateView):
 
         return super().form_valid(form)
 
+
+class RemoveCartItemView(DeleteView):
+    model = models.CartItem
+    success_url = reverse_lazy('cart:cart')
+
+    def get_queryset(self):
+        # not strictly needed for functionality but good to do for security purposes
+        return models.CartItem.objects.filter(cart__user=self.request.user)
 
