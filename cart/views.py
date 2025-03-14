@@ -1,11 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import DeleteView, View
 
-from . import models, forms
-from products import models as product_models
+from . import models
 
 
 class CartDetailView(LoginRequiredMixin, generic.DetailView):
@@ -27,19 +26,14 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
         }
 
 
-class CreateCartItemView(CreateView):
+class AddItemToCartView(View):
     model = models.CartItem
-    form_class = forms.CreateCartItemForm
-    success_url = reverse_lazy('cart:cart')
 
-    def form_valid(self, form):
-        cart_item = form.save(commit=False)
-        cart_item.product = get_object_or_404(product_models.Product, id=self.kwargs.get('product_id'))
-        cart_item.cart = models.Cart.objects.get(user=self.request.user)
-
-        cart_item.save()
-
-        return super().form_valid(form)
+    def post(self, request, *args, **kwargs):
+        product_id = self.kwargs.get('product_id')
+        cart = models.Cart.objects.get(user=self.request.user)
+        models.CartItem.objects.create(product_id=product_id, cart=cart, quantity=1)
+        return redirect(reverse('cart:cart'))
 
 
 class RemoveCartItemView(DeleteView):
