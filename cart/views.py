@@ -17,7 +17,7 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         cart_items = self.object.cart_items.all().select_related('product')
-        total_price = sum(item.product.price for item in cart_items)
+        total_price = sum((item.product.price * item.quantity) for item in cart_items)
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart_items,
@@ -32,7 +32,12 @@ class AddItemToCartView(View):
     def post(self, request, *args, **kwargs):
         product_id = self.kwargs.get('product_id')
         cart = models.Cart.objects.get(user=self.request.user)
-        models.CartItem.objects.create(product_id=product_id, cart=cart, quantity=1)
+        cart_item, created = models.CartItem.objects.get_or_create(product_id=product_id, cart=cart)
+
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save(update_fields=['quantity'])
+
         return redirect(reverse('cart:cart'))
 
 
