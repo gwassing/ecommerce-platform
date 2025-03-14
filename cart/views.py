@@ -18,11 +18,13 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         cart_items = self.object.cart_items.all().select_related('product')
         total_price = sum((item.product.price * item.quantity) for item in cart_items)
+        total_items = cart_items.count()
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart_items,
-            "total_items": cart_items.count(),
-            "total_price": total_price
+            "total_items": total_items,
+            "total_price": total_price,
+            "cart_is_empty": total_items == 0
         }
 
 

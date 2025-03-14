@@ -2,23 +2,27 @@
 {% load static %}
 {% block content %}
     <h1 class="text-4xl mb-14">Your bag ({{ total_items }} item{{ total_items|pluralize }})</h1>
-    <div style="display:grid; grid-template-columns: minmax(min-content, 350px) repeat(3, max-content); gap:20px">
-        <p class="font-semibold">Item</p>
-        <p class="font-semibold">Price</p>
-        <p class="font-semibold">Quantity</p>
-        <div class="invisible">empty div</div>
-        {% for item in cart_items %}
-            <p>{{ item }}</p>
-            <p>{{ item.product.price }} €</p>
-            <p class="mx-auto">{{ item.quantity }}</p>
-            <form action="{% url 'cart:remove_from_cart' item.id %}" method="POST">
-                {% csrf_token %}
-                <button>
-                    <img src="{% static 'svgs/trash.svg' %}" alt="" style="height: 20px;">
-                </button>
-            </form>
-        {% endfor %}
-        <p class="font-semibold">Total:</p>
-        <p class="font-semibold">{{ total_price }} €</p>
-    </div>
+    {% if cart_is_empty %}
+        <p>Your cart is empty</p>
+    {% else %}
+        <div style="display:grid; grid-template-columns: minmax(min-content, 350px) repeat(3, max-content); gap:20px">
+            <p class="font-semibold">Item</p>
+            <p class="font-semibold">Price</p>
+            <p class="font-semibold">Quantity</p>
+            <div class="invisible">empty div</div>
+            {% for item in cart_items %}
+                <p>{{ item }}</p>
+                <p>{{ item.product.price }} €</p>
+                <p class="mx-auto">{{ item.quantity }}</p>
+                <form action="{% url 'cart:remove_from_cart' item.id %}" method="POST">
+                    {% csrf_token %}
+                    <button>
+                        <img src="{% static 'svgs/trash.svg' %}" alt="" style="height: 20px;">
+                    </button>
+                </form>
+            {% endfor %}
+            <p class="font-semibold">Total:</p>
+            <p class="font-semibold">{{ total_price }} €</p>
+        </div>
+    {% endif %}
 {% endblock %}
