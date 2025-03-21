@@ -15,8 +15,9 @@
                 <p class="text-xl">{{ product.price }} €</p>
             </div>
             <div class="mt-12">
-                <form action="{% url "cart:add_to_cart" product.id %}" method="POST">
+                <form action="{% url "cart:add_to_cart" product.id %}" method="POST" class="flex gap-x-4">
                     {% csrf_token %}
+                    {{ cart_form }}
                     <button type="submit" class="button">Add to cart</button>
                 </form>
             </div>
