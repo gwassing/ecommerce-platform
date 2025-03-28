@@ -4,6 +4,7 @@ import dj_database_url
 import os
 import mimetypes
 import logging
+import librato
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -231,3 +232,11 @@ LOGGING = {
         }
     }
 }
+
+LIBRATO_USER = os.environ.get('LIBRATO_USER', '')
+LIBRATO_TOKEN = os.environ.get('LIBRATO_TOKEN', '')
+LIBRATO_SOURCE = os.environ.get('LIBRATO_SOURCE', 'django-app')
+
+librato_api = None
+if LIBRATO_USER and LIBRATO_TOKEN:
+    librato_api = librato.connect(LIBRATO_USER, LIBRATO_TOKEN)
