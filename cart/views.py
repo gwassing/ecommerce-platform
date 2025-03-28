@@ -35,7 +35,7 @@ class AddItemToCartView(generic.View):
 
         if form.is_valid():
             product_id = self.kwargs.get('product_id')
-            cart = models.Cart.objects.get(user=self.request.user)
+            cart, _ = models.Cart.objects.get_or_create(user=self.request.user)
             quantity = form.cleaned_data['quantity']
             cart_item, created = models.CartItem.objects.get_or_create(product_id=product_id, cart=cart)
 
