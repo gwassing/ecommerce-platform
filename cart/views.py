@@ -15,7 +15,7 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'cart/cart_detail.html'
 
     def get_object(self, queryset=None):
-        obj = models.Cart.objects.get(pk=self.request.user.pk)
+        obj = models.Cart.objects.get(user=self.request.user)
         return obj
 
     def get_context_data(self, **kwargs):
