@@ -1,9 +1,13 @@
+import logging
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 
 from . import models, forms
+
+logger = logging.getLogger('ecommerce-platform')
 
 
 class CartDetailView(LoginRequiredMixin, generic.DetailView):
@@ -44,6 +48,8 @@ class AddItemToCartView(generic.View):
             else:
                 cart_item.quantity += quantity
             cart_item.save(update_fields=['quantity'])
+
+        logger.info("Yay! Item added to cart")
 
         return redirect(reverse('cart:cart'))
 
