@@ -240,3 +240,13 @@ LIBRATO_SOURCE = os.environ.get('LIBRATO_SOURCE', 'django-app')
 librato_api = None
 if LIBRATO_USER and LIBRATO_TOKEN:
     librato_api = librato.connect(LIBRATO_USER, LIBRATO_TOKEN)
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('REDISCLOUD_URL'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
