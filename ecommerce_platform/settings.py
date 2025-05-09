@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
-    'django_extensions',
+    # 'debug_toolbar',
+    # 'django_extensions',
     'storages',
     'products.apps.ProductsConfig',
     'accounts',
@@ -55,9 +55,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar", "django_extensions"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
 INTERNAL_IPS = [
     '127.0.0.1',
