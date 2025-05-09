@@ -61,3 +61,7 @@ class RemoveCartItemView(generic.DeleteView):
     def get_queryset(self):
         # not strictly needed for functionality but good to do for security purposes
         return models.CartItem.objects.filter(cart__user=self.request.user)
+
+
+class CheckoutView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'cart/checkout.html'

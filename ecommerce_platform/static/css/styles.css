@@ -653,8 +653,20 @@ video {
   margin-top: 3rem;
 }
 
+.mt-16 {
+  margin-top: 4rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
 .block {
   display: block;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex {
@@ -675,6 +687,11 @@ video {
 
 .hidden {
   display: none;
+}
+
+.max-w-fit {
+  max-width: -moz-fit-content;
+  max-width: fit-content;
 }
 
 .border-collapse {
@@ -742,6 +759,10 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.p-9 {
+  padding: 2.25rem;
 }
 
 .pb-5 {
