@@ -15,11 +15,21 @@
                 <p class="text-xl">{{ product.price }} €</p>
             </div>
             <div class="mt-12">
-                <form action="{% url "cart:add_to_cart" product.id %}" method="POST" class="flex gap-x-4">
-                    {% csrf_token %}
-                    {{ cart_form }}
-                    <button type="submit" class="button">Add to cart</button>
-                </form>
+                {% if user.is_authenticated %}
+                    <form action="{% url "cart:add_to_cart" product.id %}" method="POST" class="flex gap-x-4">
+                        {% csrf_token %}
+                        {{ cart_form }}
+                        <button type="submit" class="button">Add to cart</button>
+                    </form>
+                {% else %}
+                    <div class="flex gap-x-4">
+                        <div class="self-center">
+                            {{ cart_form }}
+                        </div>
+                        <a href="{% url 'login' %}?next={{ request.get_full_path }}" class="button block">Add to
+                            cart</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

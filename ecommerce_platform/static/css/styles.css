@@ -661,6 +661,10 @@ video {
   margin-top: 2rem;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .block {
   display: block;
 }
@@ -757,6 +761,10 @@ video {
   row-gap: 0.5rem;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .border {
   border-width: 1px;
 }
@@ -783,6 +791,10 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.align-middle {
+  vertical-align: middle;
 }
 
 .text-2xl {
