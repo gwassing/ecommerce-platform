@@ -34,6 +34,6 @@
             <p class="font-semibold">Total:</p>
             <p class="font-semibold">{{ total_price }} €</p>
         </div>
-        <a href="{% url 'cart:checkout' %}" class="inline-block button mt-12 ">Go to checkout</a>
+        <a href="{% url 'checkout:checkout' %}" class="inline-block button mt-12 ">Go to checkout</a>
     {% endif %}
 {% endblock %}

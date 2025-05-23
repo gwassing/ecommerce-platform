@@ -89,7 +89,3 @@ class IncrementCartItemQuantityView(generic.View):
         cart_item.save(update_fields=['quantity'])
 
         return redirect(reverse('cart:cart'))
-
-
-class CheckoutView(LoginRequiredMixin, generic.TemplateView):
-    template_name = 'cart/checkout.html'
