@@ -63,5 +63,33 @@ class RemoveCartItemView(generic.DeleteView):
         return models.CartItem.objects.filter(cart__user=self.request.user)
 
 
+class DecrementCartItemQuantityView(generic.View):
+    model = models.CartItem
+
+    def post(self, request, *args, **kwargs):
+        cart_item = models.CartItem.objects.get(pk=self.kwargs.get('pk'))
+
+        if cart_item.quantity == 1:
+            cart_item.quantity = 0
+            cart_item.delete()
+        else:
+            cart_item.quantity -= 1
+            cart_item.save(update_fields=['quantity'])
+
+        return redirect(reverse('cart:cart'))
+
+
+class IncrementCartItemQuantityView(generic.View):
+    modes = models.CartItem
+
+    def post(self, request, *args, **kwargs):
+        cart_item = models.CartItem.objects.get(pk=self.kwargs.get('pk'))
+
+        cart_item.quantity += 1
+        cart_item.save(update_fields=['quantity'])
+
+        return redirect(reverse('cart:cart'))
+
+
 class CheckoutView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'cart/checkout.html'

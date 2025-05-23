@@ -641,6 +641,11 @@ video {
   margin-right: auto;
 }
 
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .mb-14 {
   margin-bottom: 3.5rem;
 }
@@ -651,18 +656,6 @@ video {
 
 .mt-12 {
   margin-top: 3rem;
-}
-
-.mt-16 {
-  margin-top: 4rem;
-}
-
-.mt-8 {
-  margin-top: 2rem;
-}
-
-.mt-6 {
-  margin-top: 1.5rem;
 }
 
 .block {
@@ -691,11 +684,6 @@ video {
 
 .hidden {
   display: none;
-}
-
-.max-w-fit {
-  max-width: -moz-fit-content;
-  max-width: fit-content;
 }
 
 .border-collapse {
@@ -769,8 +757,19 @@ video {
   border-width: 1px;
 }
 
-.p-9 {
-  padding: 2.25rem;
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .pb-5 {
@@ -791,10 +790,6 @@ video {
 
 .text-center {
   text-align: center;
-}
-
-.align-middle {
-  vertical-align: middle;
 }
 
 .text-2xl {
@@ -851,7 +846,7 @@ body {
 }
 
 .button:hover{
-  background-color: #FEAD34;
+  background-color: #feae36;
 }
 
 form div{
@@ -892,5 +887,15 @@ label {
   font-size: 14px;
   color: grey;
   font-style: italic;
+}
+
+.hover\:bg-gray-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 

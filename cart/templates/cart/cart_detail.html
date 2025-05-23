@@ -5,19 +5,29 @@
     {% if cart_is_empty %}
         <p>Your cart is empty</p>
     {% else %}
-        <div style="display:grid; grid-template-columns: minmax(min-content, 350px) repeat(3, max-content); gap:20px">
+        <div style="display:grid; grid-template-columns: minmax(min-content, 350px) repeat(3, max-content); gap:20px; align-items: center">
             <p class="font-semibold">Item</p>
             <p class="font-semibold">Price</p>
-            <p class="font-semibold">Quantity</p>
+            <p class="font-semibold mx-auto">Quantity</p>
             <div class="invisible">empty div</div>
             {% for item in cart_items %}
                 <p>{{ item }}</p>
                 <p>{{ item.product.price }} €</p>
-                <p class="mx-auto">{{ item.quantity }}</p>
-                <form action="{% url 'cart:remove_from_cart' item.id %}" method="POST">
+                <div class="flex">
+                    <form action="{% url 'cart:decrement_quantity' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 hover:bg-gray-100">-</button>
+                    </form>
+                    <p class="mx-auto px-2 py-1">{{ item.quantity }}</p>
+                    <form action="{% url 'cart:increment_quantity' item.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="px-3 py-1 hover:bg-gray-100">+</button>
+                    </form>
+                </div>
+                <form action="{% url 'cart:remove_from_cart' item.id %}" method="POST" class="mx-auto my-auto">
                     {% csrf_token %}
-                    <button>
-                        <img src="{% static 'svgs/trash.svg' %}" alt="" style="height: 20px;">
+                    <button class="flex px-3 py-1 hover:bg-gray-100">
+                        <img src="{% static 'svgs/trash.svg' %}" alt="" class="align-center" style="height: 20px;">
                     </button>
                 </form>
             {% endfor %}
