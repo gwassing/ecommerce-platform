@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'storages',
     'products.apps.ProductsConfig',
     'accounts',
-    'cart'
+    'cart',
+    'checkout'
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
