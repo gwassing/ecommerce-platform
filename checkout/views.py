@@ -42,6 +42,9 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
                     quantity=item.quantity
                 )
 
+            # empty cart
+            request.user.cart.cart_items.all().delete()
+
             return redirect(reverse('checkout:order_confirmation'))
 
         # context is created so that form is displayed with fields pre-filled in case form is not valid
