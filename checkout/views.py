@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import generic
 
 from accounts.forms import ShippingDetailsForm
-from accounts.models import Order
+from accounts.models import Order, PurchasedItem
 from cart.models import Cart
 
 
@@ -21,22 +21,26 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = ShippingDetailsForm(data=request.POST)
-        print(form.data)
 
         if form.is_valid():
-            print('form is valid')
+            # attach user to shipping details form instance
             shipping_details_obj = form.save(commit=False)
             shipping_details_obj.user = request.user
             shipping_details_obj.save()
 
-            print('shipping details obj', shipping_details_obj)
-
+            # create an order with the user's shipping details
             order = Order.objects.create(
                 user=request.user,
-                purchased_items=request.user.cart,
                 shipping_details=shipping_details_obj
             )
-            print('order obj', order)
+
+            # transform user's cart items into purchased items and add to order object
+            for item in request.user.cart.cart_items.all():
+                PurchasedItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity
+                )
 
             return redirect(reverse('checkout:order_confirmation'))
 
