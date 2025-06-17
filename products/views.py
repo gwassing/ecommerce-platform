@@ -9,20 +9,6 @@ class ProductListView(ListView):
     model = Product
     template_name = 'products/product_list.html'
     context_object_name = "products"
-    cache_timeout = 60*60*24
-
-    def get_queryset(self):
-        cache_key = "product_list_queryset"
-        queryset = cache.get(cache_key)
-
-        if queryset is None:
-            queryset = super().get_queryset()
-            cache.set(cache_key, queryset, self.cache_timeout)
-            print('cache miss')
-        else:
-            print('cache hit')
-
-        return queryset
 
 
 class ProductDetailView(DetailView):
