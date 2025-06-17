@@ -12,10 +12,9 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'checkout/checkout.html'
 
     def get_context_data(self, **kwargs):
-        cart_items = Cart.objects.get(user=self.request.user).cart_items.all()  # prefetch or select_related?
-
         return super().get_context_data(**kwargs) | {
-            "cart_items": cart_items,
+            "cart_items": Cart.objects.get(user=self.request.user).get_cart_items(),
+            "total_price": Cart.objects.get(user=self.request.user).get_total_cart_price(),
             "shipping_form": ShippingDetailsForm()
         }
 
