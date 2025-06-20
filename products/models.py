@@ -1,10 +1,9 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from datetime import date
-from django.contrib.postgres.fields import ArrayField
-
 
 from django.db.models import CheckConstraint, Q
+from core.models import StatusMixin
 
 PRODUCT_CATEGORIES = {
     "SHOES": "Shoes",
@@ -13,7 +12,7 @@ PRODUCT_CATEGORIES = {
 }
 
 
-class Product (models.Model):
+class Product (StatusMixin, models.Model):
     category = models.CharField(max_length=50, choices=PRODUCT_CATEGORIES)
     brand = models.CharField(max_length=50)
     item_name = models.CharField(max_length=100)

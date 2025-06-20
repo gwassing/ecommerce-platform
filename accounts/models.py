@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 from cart.models import Cart
+from core.models import StatusMixin
 from products.models import Product
 
 
@@ -9,7 +10,7 @@ class User(AbstractUser):
     location = models.CharField(max_length=50, blank=True, null=True)
 
 
-class ShippingDetails(models.Model):
+class ShippingDetails(StatusMixin, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
