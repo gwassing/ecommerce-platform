@@ -10,11 +10,11 @@ class Cart(models.Model):
     def __str__(self):
         return f"{self.user}'s cart"
 
-    def get_cart_items(self):
+    def get_items(self):
         return self.cart_items.all().select_related('product')
 
-    def get_total_cart_price(self):
-        return sum((item.product.price * item.quantity) for item in self.get_cart_items())
+    def get_total_price(self):
+        return sum((item.product.price * item.quantity) for item in self.get_items())
 
 
 class CartItem(models.Model):

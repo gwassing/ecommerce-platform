@@ -21,10 +21,10 @@ class CartDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
 
         return super().get_context_data(**kwargs) | {
-            "cart_items": self.object.get_cart_items(),
-            "total_items": self.object.get_cart_items().count(),
-            "total_price": self.object.get_total_cart_price(),
-            "cart_is_empty": self.object.get_cart_items().count() == 0
+            "cart_items": self.object.get_items(),
+            "total_items": self.object.get_items().count(),
+            "total_price": self.object.get_total_price(),
+            "cart_is_empty": self.object.get_items().count() == 0
         }
 
 
