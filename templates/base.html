@@ -17,10 +17,10 @@
             <img src="{% static 'svgs/logo.svg' %}" alt="" width="160" height="35">
         </a>
         <div class="flex gap-10">
-            <a href="{% url 'products:product_list' %}" class="nav-link">All products</a>
-            <a href="{% url 'products:brands_list' %}" class="nav-link">Brands</a>
-            <a href="#" class="nav-link">Categories</a>
-            <a href="#" class="nav-link">Deals</a>
+            <a href="{% url 'products:product_list' %}" class="link">All products</a>
+            <a href="{% url 'products:brands_list' %}" class="link">Brands</a>
+            <a href="#" class="link">Categories</a>
+            <a href="#" class="link">Deals</a>
         </div>
         <div class="flex gap-10">
             {% if user.is_authenticated %}
@@ -29,9 +29,9 @@
                     <button class="nav-link" type="submit">Log out</button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}" class="nav-link">Log in</a>
+                <a href="{% url 'login' %}" class="link">Log in</a>
             {% endif %}
-            <a href="{% url 'cart:cart' %}" class="nav-link">Cart</a>
+            <a href="{% url 'cart:cart' %}" class="link">Cart</a>
         </div>
     </div>
 {% endblock %}

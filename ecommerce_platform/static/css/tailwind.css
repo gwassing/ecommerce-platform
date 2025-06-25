@@ -6,7 +6,7 @@ body {
     padding: 24px;
 }
 
-.nav-link:hover {
+.link:hover {
     text-decoration: underline;
     text-decoration-color: #FF70FF;
     text-decoration-thickness: 3px;
