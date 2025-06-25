@@ -18,6 +18,9 @@ class ShippingDetails(StatusMixin, models.Model):
     postcode = models.CharField(max_length=5)
     city = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name_plural = 'Shipping Details'
+
     def __str__(self):
         return f'{self.last_name}, {self.address}, {self.city}'
 
