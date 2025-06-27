@@ -34,6 +34,9 @@
             <p class="font-semibold">Total:</p>
             <p class="font-semibold">{{ total_price }} €</p>
         </div>
-        <a href="{% url 'checkout:checkout' %}" class="inline-block button mt-12 ">Go to checkout</a>
+        <div class="flex gap-5 mt-12 items-center">
+            <a href="{% url 'products:product_list' %}" class="button-secondary">Continue shopping</a>
+            <a href="{% url 'checkout:checkout' %}" class="button">Go to checkout</a>
+        </div>
     {% endif %}
 {% endblock %}
