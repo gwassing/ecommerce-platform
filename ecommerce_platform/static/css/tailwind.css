@@ -41,6 +41,14 @@ form div{
     justify-content: center;
 }
 
+input {
+    margin-bottom: 10px;
+}
+
+input:last-child{
+    margin-bottom:0;
+}
+
 input[type=text], input[type=password] {
     border: 1px solid lightgray;
     border-radius: 4px;

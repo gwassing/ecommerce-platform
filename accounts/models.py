@@ -17,6 +17,7 @@ class ShippingDetails(StatusMixin, models.Model):
     address = models.CharField(max_length=200)
     postcode = models.CharField(max_length=5)
     city = models.CharField(max_length=30)
+    save_details = models.BooleanField(default=False, help_text="Save shipping details for future orders")
 
     class Meta:
         verbose_name_plural = 'Shipping Details'

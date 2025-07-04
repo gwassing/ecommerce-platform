@@ -711,6 +711,10 @@ video {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -723,8 +727,16 @@ video {
   align-items: center;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-1 {
+  gap: 0.25rem;
 }
 
 .gap-10 {
@@ -891,6 +903,14 @@ form div{
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+input {
+  margin-bottom: 10px;
+}
+
+input:last-child{
+  margin-bottom:0;
 }
 
 input[type=text], input[type=password] {

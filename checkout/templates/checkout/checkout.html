@@ -1,11 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="flex justify-between gap-x-12" style="">
+    <div class="flex justify-between gap-x-12">
         <div class="w-2/3" style="flex-grow:1">
             <h2 class="text-4xl pb-5">Shipping details</h2>
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ shipping_form }}
+                <div>
+                    {{ shipping_form.first_name.label_tag }}
+                    {{ shipping_form.first_name }}
+                    {{ shipping_form.last_name.label_tag }}
+                    {{ shipping_form.last_name }}
+                    {{ shipping_form.address.label_tag }}
+                    {{ shipping_form.address }}
+                    {{ shipping_form.postcode.label_tag }}
+                    {{ shipping_form.postcode }}
+                    {{ shipping_form.city.label_tag }}
+                    {{ shipping_form.city }}
+                    <div class="flex flex-row justify-start items-center gap-1">
+                        {{ shipping_form.save_details }}
+                        {{ shipping_form.save_details.help_text }}
+                    </div>
+                </div>
                 <button type="submit" class="button my-3">
                     Place order
                 </button>
