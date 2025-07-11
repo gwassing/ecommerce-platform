@@ -23,14 +23,9 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
         form = ShippingDetailsForm(data=request.POST)
 
         if form.is_valid():
-            # attach user to shipping details form instance only if user wants to save their details
+            # attach user to shipping details form instance
             shipping_details_obj = form.save(commit=False)
-
-            if shipping_details_obj.save_details:
-                print('save details')
-                shipping_details_obj.user = request.user
-
-            shipping_details_obj.save()
+            shipping_details_obj.user = request.user
 
             # create an order with the user's shipping details
             order = Order.objects.create(
