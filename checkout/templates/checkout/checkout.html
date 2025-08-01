@@ -5,28 +5,16 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <h2 class="text-4xl pb-5">Shipping details</h2>
-                {% if default_shipping_address %}
+                {% if existing_shipping_address %}
                     <div>
-                        {{ default_shipping_address.first_name }} {{ default_shipping_address.last_name }}
+                        {{ existing_shipping_address.first_name }} {{ existing_shipping_address.last_name }}
                         <br>
-                        {{ default_shipping_address.address }}
+                        {{ existing_shipping_address.address }}
                         <br>
-                        {{ default_shipping_address.postcode }} {{ default_shipping_address.city }}
+                        {{ existing_shipping_address.postcode }} {{ existing_shipping_address.city }}
                     </div>
-                    <div>(default address)</div>
-                    <button type="submit" class="button my-3" name="action" value="use_default_shipping_address">
-                        Place order
-                    </button>
-                {% elif last_used_shipping_address %}
-                    <div>
-                        {{ last_used_shipping_address.first_name }} {{ last_used_shipping_address.last_name }}
-                        <br>
-                        {{ last_used_shipping_address.address }}
-                        <br>
-                        {{ last_used_shipping_address.postcode }} {{ last_used_shipping_address.city }}
-                    </div>
-                    <div>(last used address)</div>
-                    <button type="submit" class="button my-3" name="action" value="use_last_used_shipping_address">
+                    <div>(default address? {{ existing_shipping_address.is_default }})</div>
+                    <button type="submit" class="button my-3" name="action" value="use_existing_shipping_address">
                         Place order
                     </button>
                 {% else %}

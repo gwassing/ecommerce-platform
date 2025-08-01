@@ -23,8 +23,7 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
             "cart_items": cart.get_items(),
             "total_price": cart.get_total_price(),
             "shipping_form": ShippingDetailsForm(),
-            "default_shipping_address": default_shipping_address.first() if default_shipping_address.exists() else None,
-            "last_used_shipping_address": last_used_shipping_address.last() if last_used_shipping_address.exists() else None,
+            "existing_shipping_address": default_shipping_address.first() if default_shipping_address.exists() else last_used_shipping_address.last(),
         }
 
     def post(self, request, *args, **kwargs):
@@ -43,17 +42,12 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
                 context = self.get_context_data()
                 context['shipping_form'] = form
                 return render(request, self.template_name, context)
-
-        elif action == 'use_default_shipping_address':
-            default_shipping_address = ShippingDetails.objects.filter(
+        elif action == 'use_existing_shipping_address':
+            existing_shipping_address = ShippingDetails.objects.filter(
                 user=self.request.user,
                 is_default=True
-            ).first()
-            shipping_details_obj = default_shipping_address
-
-        elif action == 'use_last_used_shipping_address':
-            last_used_shipping_address = ShippingDetails.objects.filter(user=self.request.user).last()
-            shipping_details_obj = last_used_shipping_address
+            ).first() or ShippingDetails.objects.filter(user=self.request.user).last()
+            shipping_details_obj = existing_shipping_address
 
         # create an order with the user's shipping details
         order = Order.objects.create(
