@@ -34,7 +34,7 @@ class Order(models.Model):
     def __str__(self):
         created_formatted = self.created.strftime("%Y-%m-%d %H:%M")
 
-        return f"{self.user} - {self.purchased_items.count()} items - {created_formatted}"
+        return f"{self.pk} - {self.user} - {created_formatted}"
 
 
 class PurchasedItem(models.Model):
