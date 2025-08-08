@@ -7,7 +7,29 @@ from accounts.forms import ShippingDetailsForm
 from accounts.models import Order, PurchasedItem, ShippingDetails
 
 
-class CheckoutView(LoginRequiredMixin, generic.TemplateView):
+class CreateOrderMixin:
+    def create_order_and_clear_cart(self, shipping_details):
+        user = self.request.user
+        # create an order with the user's shipping details
+        order = Order.objects.create(
+            user=user,
+            shipping_details=shipping_details
+        )
+
+        # transform user's cart items into purchased items and add to order object
+        for item in user.cart.cart_items.all():
+            PurchasedItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity
+            )
+
+        # empty cart
+        user.cart.cart_items.all().delete()
+        return redirect(reverse('checkout:order_confirmation'))
+
+
+class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
     template_name = 'checkout/checkout.html'
 
     def get_context_data(self, **kwargs):
@@ -38,36 +60,18 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
 
         if form.is_valid():
             # attach user to shipping details form instance
-            shipping_details_obj = form.save(commit=False)
-            shipping_details_obj.user = request.user
-            shipping_details_obj.save()
+            shipping_details = form.save(commit=False)
+            shipping_details.user = request.user
+            shipping_details.save()
+            return self.create_order_and_clear_cart(shipping_details)
         else:
             # If the form is invalid, get the standard context and then add the invalid form object to it.
             context = self.get_context_data()
             context['shipping_form'] = form
             return render(request, self.template_name, context)
 
-        # create an order with the user's shipping details
-        order = Order.objects.create(
-            user=request.user,
-            shipping_details=shipping_details_obj
-        )
 
-        # transform user's cart items into purchased items and add to order object
-        for item in request.user.cart.cart_items.all():
-            PurchasedItem.objects.create(
-                order=order,
-                product=item.product,
-                quantity=item.quantity
-            )
-
-        # empty cart
-        request.user.cart.cart_items.all().delete()
-
-        return redirect(reverse('checkout:order_confirmation'))
-
-
-class CheckoutExistingShippingDetailsView(LoginRequiredMixin, generic.View):
+class CheckoutExistingShippingDetailsView(LoginRequiredMixin, CreateOrderMixin, generic.View):
     def post(self, request, *args, **kwargs):
         try:
             default_shipping_details = ShippingDetails.objects.get(
@@ -80,22 +84,7 @@ class CheckoutExistingShippingDetailsView(LoginRequiredMixin, generic.View):
         last_used_shipping_details = Order.objects.latest('pk').shipping_details
         shipping_details_obj = default_shipping_details if default_shipping_details else last_used_shipping_details
 
-        order = Order.objects.create(
-            user=request.user,
-            shipping_details=shipping_details_obj
-        )
-
-        # transform user's cart items into purchased items and add to order object
-        for item in request.user.cart.cart_items.all():
-            PurchasedItem.objects.create(
-                order=order,
-                product=item.product,
-                quantity=item.quantity
-            )
-
-        # empty cart
-        request.user.cart.cart_items.all().delete()
-        return redirect(reverse('checkout:order_confirmation'))
+        return self.create_order_and_clear_cart(shipping_details_obj)
 
 
 class OrderConfirmationView(LoginRequiredMixin, generic.TemplateView):
