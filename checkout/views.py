@@ -12,24 +12,28 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         cart = self.request.user.cart
-        default_shipping_address = ShippingDetails.objects.filter(
-            user=self.request.user,
-            is_default=True
-        )
 
-        last_used_shipping_address = ShippingDetails.objects.filter(user=self.request.user)
+        try:
+            default_shipping_details = ShippingDetails.objects.get(
+                user=self.request.user,
+                is_default=True
+            )
+        except ShippingDetails.DoesNotExist:
+            default_shipping_details = None
+
+        last_used_shipping_details = Order.objects.latest('pk').shipping_details
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart.get_items(),
             "total_price": cart.get_total_price(),
             "shipping_form": ShippingDetailsForm(),
-            "existing_shipping_address": default_shipping_address.first() if default_shipping_address.exists() else last_used_shipping_address.last(),
+            "existing_shipping_details": default_shipping_details if default_shipping_details else last_used_shipping_details,
         }
 
     def post(self, request, *args, **kwargs):
         action = request.POST.get('action')
 
-        if action == 'create_new_shipping_address':
+        if action == 'create_new_shipping_details':
             form = ShippingDetailsForm(data=request.POST)
 
             if form.is_valid():
@@ -42,12 +46,12 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
                 context = self.get_context_data()
                 context['shipping_form'] = form
                 return render(request, self.template_name, context)
-        elif action == 'use_existing_shipping_address':
-            existing_shipping_address = ShippingDetails.objects.filter(
+        elif action == 'use_existing_shipping_details':
+            existing_shipping_details = ShippingDetails.objects.filter(
                 user=self.request.user,
                 is_default=True
             ).first() or ShippingDetails.objects.filter(user=self.request.user).last()
-            shipping_details_obj = existing_shipping_address
+            shipping_details_obj = existing_shipping_details
 
         # create an order with the user's shipping details
         order = Order.objects.create(

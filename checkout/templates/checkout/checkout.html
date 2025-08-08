@@ -5,16 +5,16 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <h2 class="text-4xl pb-5">Shipping details</h2>
-                {% if existing_shipping_address %}
+                {% if existing_shipping_details %}
                     <div>
-                        {{ existing_shipping_address.first_name }} {{ existing_shipping_address.last_name }}
+                        {{ existing_shipping_details.first_name }} {{ existing_shipping_details.last_name }}
                         <br>
-                        {{ existing_shipping_address.address }}
+                        {{ existing_shipping_details.address }}
                         <br>
-                        {{ existing_shipping_address.postcode }} {{ existing_shipping_address.city }}
+                        {{ existing_shipping_details.postcode }} {{ existing_shipping_details.city }}
                     </div>
-                    <div>(default address? {{ existing_shipping_address.is_default }})</div>
-                    <button type="submit" class="button my-3" name="action" value="use_existing_shipping_address">
+                    <div>(default details? {{ existing_shipping_details.is_default }})</div>
+                    <button type="submit" class="button my-3" name="action" value="use_existing_shipping_details">
                         Place order
                     </button>
                 {% else %}
@@ -34,7 +34,7 @@
                             {{ shipping_form.is_default.help_text }}
                         </div>
                     </div>
-                    <button type="submit" class="button my-3" name="action" value="create_new_shipping_address">
+                    <button type="submit" class="button my-3" name="action" value="create_new_shipping_details">
                         Place order
                     </button>
                 {% endif %}
