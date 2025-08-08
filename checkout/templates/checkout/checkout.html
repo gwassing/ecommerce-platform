@@ -2,22 +2,25 @@
 {% block content %}
     <div class="flex justify-between gap-x-12">
         <div class="w-2/3" style="flex-grow:1">
-            <form action="" method="POST">
-                {% csrf_token %}
-                <h2 class="text-4xl pb-5">Shipping details</h2>
-                {% if existing_shipping_details %}
-                    <div>
-                        {{ existing_shipping_details.first_name }} {{ existing_shipping_details.last_name }}
-                        <br>
-                        {{ existing_shipping_details.address }}
-                        <br>
-                        {{ existing_shipping_details.postcode }} {{ existing_shipping_details.city }}
-                    </div>
-                    <div>(default details? {{ existing_shipping_details.is_default }})</div>
-                    <button type="submit" class="button my-3" name="action" value="use_existing_shipping_details">
+            <h2 class="text-4xl pb-5">Shipping details</h2>
+            {% if existing_shipping_details %}
+                <div>
+                    {{ existing_shipping_details.first_name }} {{ existing_shipping_details.last_name }}
+                    <br>
+                    {{ existing_shipping_details.address }}
+                    <br>
+                    {{ existing_shipping_details.postcode }} {{ existing_shipping_details.city }}
+                </div>
+                <div>(default address? {{ existing_shipping_details.is_default }})</div>
+                <form action="{% url "checkout:checkout_existing_shipping_details" pk=existing_shipping_details.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type='submit' class="button my-3">
                         Place order
                     </button>
-                {% else %}
+                </form>
+            {% else %}
+                <form action="" method="POST">
+                    {% csrf_token %}
                     <div>
                         {{ shipping_form.first_name.label_tag }}
                         {{ shipping_form.first_name }}
@@ -34,11 +37,11 @@
                             {{ shipping_form.is_default.help_text }}
                         </div>
                     </div>
-                    <button type="submit" class="button my-3" name="action" value="create_new_shipping_details">
+                    <button type="submit" class="button my-3">
                         Place order
                     </button>
-                {% endif %}
-            </form>
+                </form>
+            {% endif %}
         </div>
         <div class="w-1/3 pl-3">
             <h2 class="text-4xl pb-5">Cart summary</h2>
