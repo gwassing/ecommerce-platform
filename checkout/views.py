@@ -21,7 +21,10 @@ class CheckoutView(LoginRequiredMixin, generic.TemplateView):
         except ShippingDetails.DoesNotExist:
             default_shipping_details = None
 
-        last_used_shipping_details = Order.objects.latest('pk').shipping_details
+        try:
+            last_used_shipping_details = Order.objects.latest('pk').shipping_details
+        except Order.DoesNotExist:
+            last_used_shipping_details = None
 
         return super().get_context_data(**kwargs) | {
             "cart_items": cart.get_items(),
