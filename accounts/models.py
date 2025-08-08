@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser
 
 from cart.models import Cart
@@ -24,6 +24,13 @@ class ShippingDetails(StatusMixin, models.Model):
 
     def __str__(self):
         return f'{self.last_name}, {self.address}, {self.city}'
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            if self.is_default:
+                # set is_default=False for all other records except the one being currently saved
+                ShippingDetails.objects.exclude(pk=self.pk).update(is_default=False)
+        super().save(*args, **kwargs)
 
 
 class Order(models.Model):
