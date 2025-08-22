@@ -26,7 +26,7 @@ class CreateOrderMixin:
 
         # empty cart
         user.cart.cart_items.all().delete()
-        return redirect(reverse('checkout:order_confirmation'))
+        return reverse('checkout:order_confirmation')
 
 
 class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
@@ -71,11 +71,11 @@ class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
             return render(request, self.template_name, context)
 
 
-class CheckoutExistingShippingDetailsView(LoginRequiredMixin, CreateOrderMixin, generic.View):
-    def get(self, request, *args, **kwargs):
+class ExistingShippingDetailsRedirectView(LoginRequiredMixin, CreateOrderMixin, generic.RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
         shipping_details_obj = ShippingDetails.objects.get(
             pk=kwargs['pk'],
-            user=request.user
+            user=self.request.user
         )
 
         return self.create_order_and_clear_cart(shipping_details_obj)

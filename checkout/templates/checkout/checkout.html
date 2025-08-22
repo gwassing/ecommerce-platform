@@ -13,7 +13,7 @@
                 </div>
                 <div>(default address? {{ existing_shipping_details.is_default }})</div>
                 <div class="my-3">
-                    <a href="{% url "checkout:checkout_existing_shipping_details" pk=existing_shipping_details.pk %}"
+                    <a href="{% url "checkout:existing_shipping_details_redirect" pk=existing_shipping_details.pk %}"
                        class="button my-3">
                         Place order
                     </a>
