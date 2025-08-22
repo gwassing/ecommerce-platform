@@ -44,7 +44,7 @@ class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
             default_shipping_details = None
 
         try:
-            last_used_shipping_details = Order.objects.latest('pk').shipping_details
+            last_used_shipping_details = Order.objects.filter(user=self.request.user).latest('pk').shipping_details
         except Order.DoesNotExist:
             last_used_shipping_details = None
 
@@ -72,17 +72,11 @@ class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
 
 
 class CheckoutExistingShippingDetailsView(LoginRequiredMixin, CreateOrderMixin, generic.View):
-    def post(self, request, *args, **kwargs):
-        try:
-            default_shipping_details = ShippingDetails.objects.get(
-                user=self.request.user,
-                is_default=True
-            )
-        except ShippingDetails.DoesNotExist:
-            default_shipping_details = None
-
-        last_used_shipping_details = Order.objects.latest('pk').shipping_details
-        shipping_details_obj = default_shipping_details if default_shipping_details else last_used_shipping_details
+    def get(self, request, *args, **kwargs):
+        shipping_details_obj = ShippingDetails.objects.get(
+            pk=kwargs['pk'],
+            user=request.user
+        )
 
         return self.create_order_and_clear_cart(shipping_details_obj)
 
