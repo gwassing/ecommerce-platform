@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="text-4xl mb-14">Payment details</h2>
+    <div>
+        address pk stored in django session storage: {{ request.session.checkout_address_id }}
+    </div>
+{% endblock %}

@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from accounts.forms import ShippingDetailsForm
 from accounts.models import Order, PurchasedItem, ShippingDetails
 
 
@@ -29,46 +28,46 @@ class CreateOrderMixin:
         return reverse('checkout:order_confirmation')
 
 
-class CheckoutView(LoginRequiredMixin, CreateOrderMixin, generic.TemplateView):
-    template_name = 'checkout/checkout.html'
+class CheckoutAddressView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'checkout/checkout_address.html'
 
     def get_context_data(self, **kwargs):
-        cart = self.request.user.cart
-
         try:
-            default_shipping_details = ShippingDetails.objects.get(
-                user=self.request.user,
-                is_default=True
-            )
+            existing_shipping_details = ShippingDetails.objects.filter(user=self.request.user).distinct()
         except ShippingDetails.DoesNotExist:
-            default_shipping_details = None
-
-        try:
-            last_used_shipping_details = Order.objects.filter(user=self.request.user).latest('pk').shipping_details
-        except Order.DoesNotExist:
-            last_used_shipping_details = None
+            existing_shipping_details = None
 
         return super().get_context_data(**kwargs) | {
-            "cart_items": cart.get_items(),
-            "total_price": cart.get_total_price(),
-            "shipping_form": ShippingDetailsForm(),
-            "existing_shipping_details": default_shipping_details if default_shipping_details else last_used_shipping_details,
+            "existing_shipping_details": existing_shipping_details,
         }
 
     def post(self, request, *args, **kwargs):
-        form = ShippingDetailsForm(data=request.POST)
+        selected_address_id = request.POST.get('shipping_address')
 
-        if form.is_valid():
-            # attach user to shipping details form instance
-            shipping_details = form.save(commit=False)
-            shipping_details.user = request.user
-            shipping_details.save()
-            return self.create_order_and_clear_cart(shipping_details)
+        if selected_address_id:
+            try:
+                address = ShippingDetails.objects.get(
+                    pk=selected_address_id,
+                    user=request.user
+                )
+                request.session['checkout_address_id'] = address.pk
+                print("=" * 50)
+                print("SESSION DEBUG:")
+                print(f"Address ID stored: {request.session['checkout_address_id']}")
+                print(f"All session data: {dict(request.session)}")
+                print(f"Session key: {request.session.session_key}")
+                print("=" * 50)
+                return redirect('checkout:payment')
+            except ShippingDetails.DoesNotExist:
+                print("Address does not exist")
+                return redirect('checkout:address')
         else:
-            # If the form is invalid, get the standard context and then add the invalid form object to it.
-            context = self.get_context_data()
-            context['shipping_form'] = form
-            return render(request, self.template_name, context)
+            print("No address selected")
+            return redirect('checkout:address')
+
+
+class CheckoutPaymentView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'checkout/checkout_payment.html'
 
 
 class ExistingShippingDetailsRedirectView(LoginRequiredMixin, CreateOrderMixin, generic.RedirectView):
