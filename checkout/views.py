@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from accounts.forms import ShippingDetailsForm
+from accounts.forms import ShippingDetailsSelectForm
 from accounts.models import Order, PurchasedItem, ShippingDetails
 
 
@@ -29,44 +29,22 @@ class CreateOrderMixin:
         return reverse('checkout:order_confirmation')
 
 
-class CheckoutAddressView(LoginRequiredMixin, generic.TemplateView):
+class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
     template_name = 'checkout/checkout_address.html'
+    form_class = ShippingDetailsSelectForm
 
-    def get_context_data(self, **kwargs):
-        try:
-            existing_shipping_details = ShippingDetails.objects.filter(user=self.request.user).distinct()
-        except ShippingDetails.DoesNotExist:
-            existing_shipping_details = None
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
-        return super().get_context_data(**kwargs) | {
-            "shipping_form": ShippingDetailsForm(),
-            "existing_shipping_details": existing_shipping_details,
+    def form_valid(self, form):
+        selected_address = form.cleaned_data['shipping_details']
+        # Save to Django session
+        self.request.session['checkout_address_id'] = selected_address.id
+        print(f"✅ Stored address ID {selected_address.id} in session")
 
-        }
-
-    def post(self, request, *args, **kwargs):
-        selected_address_id = request.POST.get('shipping_address')
-
-        if selected_address_id:
-            # Verify address belongs to user
-            try:
-                ShippingDetails.objects.get(
-                    pk=selected_address_id,
-                    user=request.user
-                )
-                # Save to Django session
-                request.session['checkout_address_id'] = selected_address_id
-                print(f"✅ Stored address ID {selected_address_id} in session")
-
-                return redirect('checkout:payment')
-
-            except ShippingDetails.DoesNotExist:
-                print("Invalid address selection")
-                return redirect('checkout:address')
-        else:
-            # No address selected
-            print("Please select an address")
-            return redirect('checkout:address')
+        return redirect('checkout:payment')
 
 
 class CheckoutPaymentView(LoginRequiredMixin, generic.TemplateView):

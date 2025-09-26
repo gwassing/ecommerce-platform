@@ -17,7 +17,20 @@ class CustomUserCreationForm(UserCreationForm):
             self.fields[fieldname].help_text = None
 
 
-class ShippingDetailsForm(forms.ModelForm):
+class ShippingDetailsCreateForm(forms.ModelForm):
     class Meta:
         model = ShippingDetails
         exclude = ['user', 'status', 'is_default']
+
+
+class ShippingDetailsSelectForm(forms.Form):
+    shipping_details = forms.ModelChoiceField(
+        queryset=ShippingDetails.objects.none(),
+        empty_label=None,
+        widget=forms.RadioSelect
+    )
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['shipping_details'].queryset = ShippingDetails.objects.filter(user=user)
