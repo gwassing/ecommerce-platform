@@ -20,4 +20,4 @@ class CustomUserCreationForm(UserCreationForm):
 class ShippingDetailsForm(forms.ModelForm):
     class Meta:
         model = ShippingDetails
-        exclude = ['user', 'status']
+        exclude = ['user', 'status', 'is_default']
