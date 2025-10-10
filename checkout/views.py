@@ -38,11 +38,6 @@ class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
         kwargs['user'] = self.request.user
         return kwargs
 
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs) | {
-            'shipping_addresses': ShippingDetails.objects.filter(user=self.request.user)
-        }
-
     def form_valid(self, form):
         selected_address = form.cleaned_data['shipping_details']
         # Save to Django session

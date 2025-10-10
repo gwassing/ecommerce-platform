@@ -3,22 +3,19 @@
     <h2 class="text-4xl mb-14">Shipping details</h2>
     <form method="POST">
         {% csrf_token %}
-        {% if shipping_addresses %}
-            {% for address in shipping_addresses %}
-                <label class="flex gap-x-5 items-center mb-12">
-                    <input type="radio"
-                           name="shipping_details"
-                           value="{{ address.pk }}">
-                    <div>
-                        <div>{{ address.first_name }} {{ address.last_name }}</div>
-                        <div>{{ address.address }}</div>
-                        <div>{{ address.postcode }} {{ address.city }}</div>
-                    </div>
-                </label>
-            {% endfor %}
-        {% else %}
-            <p>No shipping addresses found. Please add one (button)</p>
-        {% endif %}
+        {% for address in form.fields.shipping_details.queryset %}
+            <label class="flex gap-x-5 items-center mb-12">
+                <input type="radio"
+                       name="shipping_details"
+                       value="{{ address.pk }}"
+                       id="id_shipping_details_{{ forloop.counter0 }}">
+                <div>
+                    <div>{{ address.first_name }} {{ address.last_name }}</div>
+                    <div>{{ address.address }}</div>
+                    <div>{{ address.postcode }} {{ address.city }}</div>
+                </div>
+            </label>
+        {% endfor %}
         <button type="submit" class="button mt-5">
             Next
         </button>
