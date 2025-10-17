@@ -49,6 +49,44 @@ class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
         return reverse('checkout:order_confirmation')
 
 
+class CheckoutShippingDetailsCreateView(LoginRequiredMixin, generic.CreateView):
+    form_class = ShippingDetailsCreateForm
+    template_name = 'checkout/checkout_address_create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        self.object = form.save()
+
+        self.request.session['checkout_address_id'] = self.object.id
+        print('created_address:', self.object.id)
+
+        return redirect(self.place_order_and_clear_cart())
+
+    def place_order_and_clear_cart(self):
+        created_address_id = self.request.session.get('checkout_address_id')
+
+        user = self.request.user
+        # create an order with the user's shipping details
+        order = Order.objects.create(
+            user=user,
+            shipping_details_id=created_address_id
+        )
+
+        # transform user's cart items into purchased items and add to order object
+        for item in user.cart.cart_items.all():
+            PurchasedItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity
+            )
+
+        print('purchased items:', order.purchased_items.all())
+
+        # empty cart
+        user.cart.cart_items.all().delete()
+        return reverse('checkout:order_confirmation')
+
+
 class CheckoutPaymentView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'checkout/checkout_payment.html'
 

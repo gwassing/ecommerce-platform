@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2 class="text-4xl mb-14">Shipping details</h2>
-    <form method="POST">
+    <h2 class="text-4xl mb-14">Select shipping details</h2>
+    <form method="POST" id="address-form">
         {% csrf_token %}
         {% if form.shipping_details.errors %}
             <div>{{ form.shipping_details.errors }}</div>
@@ -18,8 +18,9 @@
                 </div>
             </label>
         {% endfor %}
-        <button type="submit" class="button mt-5">
-            Next
-        </button>
     </form>
+    <a href="{% url "checkout:address_create" %}" class="button-secondary">Add new address</a>
+    <button type="submit" form="address-form" class="button mt-5">
+        Place order
+    </button>
 {% endblock %}
