@@ -27,7 +27,8 @@ class ShippingDetailsSelectForm(forms.Form):
     shipping_details = forms.ModelChoiceField(
         queryset=ShippingDetails.objects.none(),
         empty_label=None,
-        widget=forms.RadioSelect
+        widget=forms.RadioSelect,
+        error_messages={'required': 'Please select an address.'}
     )
 
     def __init__(self, *args, **kwargs):

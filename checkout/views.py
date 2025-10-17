@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from accounts.forms import ShippingDetailsSelectForm
+from accounts.forms import ShippingDetailsSelectForm, ShippingDetailsCreateForm
 from accounts.models import Order, PurchasedItem
 
 
@@ -21,8 +21,6 @@ class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
         # Save to Django session
         self.request.session['checkout_address_id'] = selected_address.id
         print('selected_address:', selected_address)
-
-        # add error validation for no selected address
 
         return redirect(self.place_order_and_clear_cart())
 

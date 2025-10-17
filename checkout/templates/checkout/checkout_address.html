@@ -3,6 +3,9 @@
     <h2 class="text-4xl mb-14">Shipping details</h2>
     <form method="POST">
         {% csrf_token %}
+        {% if form.shipping_details.errors %}
+            <div>{{ form.shipping_details.errors }}</div>
+        {% endif %}
         {% for address in form.fields.shipping_details.queryset %}
             <label class="flex gap-x-5 items-center mb-12">
                 <input type="radio"
