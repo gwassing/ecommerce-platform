@@ -1,4 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div>Order placed successfully</div>
+    {% if purchased_items %}
+        <h2 class="text-4xl mb-14">Thank you for your order!</h2>
+        <div>Order summary:</div>
+        {% for item in purchased_items %}
+            <p>{{ item.product }}, {{ item.quantity }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No items purchased.</p>
+    {% endif %}
 {% endblock %}

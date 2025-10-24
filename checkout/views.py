@@ -71,3 +71,11 @@ class CheckoutPaymentView(LoginRequiredMixin, generic.TemplateView):
 
 class OrderConfirmationView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'checkout/order_confirmation.html'
+
+    def get_context_data(self, **kwargs):
+        latest_order = Order.objects.filter(user=self.request.user).last()
+        purchased_items = PurchasedItem.objects.filter(order=latest_order).select_related('product')
+
+        return super().get_context_data(**kwargs) | {
+            'purchased_items': purchased_items
+        }
