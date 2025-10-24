@@ -46,6 +46,9 @@ class PaymentDetails(models.Model):
     def __str__(self):
         return f'credit card belongs to: {self.card_holder_name}'
 
+    def get_masked_card_number(self):
+        return '**** **** **** ' + self.card_number[-4:]
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

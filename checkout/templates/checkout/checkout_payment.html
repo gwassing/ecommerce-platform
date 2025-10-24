@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2 class="text-4xl mb-14">Select credit card</h2>
+
     <form method="POST" id="payment-form">
         {% csrf_token %}
         {% for card in form.fields.payment_details.queryset %}
@@ -8,8 +9,8 @@
                 <input type="radio" name="payment_details" value="{{ card.pk }}">
                 <div>
                     <div>{{ card.card_holder_name }}</div>
-                    <div>{{ card.card_number }}</div>
-                    <div>{{ card.card_expiry_date }}</div>
+                    <div>{{ card.get_masked_card_number }}</div>
+                    <div>valid until {{ card.card_expiry_date }}</div>
                 </div>
             </label>
         {% endfor %}
