@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2 class="text-4xl mb-14">Add new shipping details</h2>
-    <form method="POST">
+    <form method="POST" id="address-create-form">
         {% csrf_token %}
         {{ form }}
-        <button type="submit" class="button mt-5">
-            Save and place order
-        </button>
     </form>
+    <a href="{% url "checkout:address" %}" class="button-secondary">Select address from list</a>
+    <button type="submit" form="address-create-form" class="button mt-5">
+        Save and place order
+    </button>
 {% endblock %}
