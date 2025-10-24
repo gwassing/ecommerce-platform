@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from accounts.models import ShippingDetails
+from accounts.models import ShippingDetails, PaymentDetails
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -35,3 +35,26 @@ class ShippingDetailsSelectForm(forms.Form):
         user = kwargs.pop('user')
         super().__init__(*args, **kwargs)
         self.fields['shipping_details'].queryset = ShippingDetails.objects.filter(user=user)
+
+
+class PaymentDetailsCreateForm(forms.ModelForm):
+    class Meta:
+        model = PaymentDetails
+        exclude = ['user']
+
+
+class PaymentDetailsSelectForm(forms.Form):
+    payment_details = forms.ModelChoiceField(
+        queryset=PaymentDetails.objects.none(),
+        empty_label=None,
+        widget=forms.RadioSelect,
+        error_messages={'required': 'Please select a payment method'}
+    )
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['payment_details'].queryset = PaymentDetails.objects.filter(user=user)
+
+
+

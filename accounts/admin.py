@@ -3,6 +3,7 @@ from accounts import models
 
 admin.site.register(models.User)
 admin.site.register(models.ShippingDetails)
+admin.site.register(models.PaymentDetails)
 
 
 class PurchasedItemInline(admin.TabularInline):

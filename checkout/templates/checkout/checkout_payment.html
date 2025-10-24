@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-    payment details
-
-    <p>Address ID: {{ request.session.checkout_address_id }}</p>
+    <h2 class="text-4xl mb-14">Select credit card</h2>
+    <form method="POST" id="payment-form">
+        {% csrf_token %}
+        {% for card in form.fields.payment_details.queryset %}
+            <label class="flex gap-x-5 items-center mb-12">
+                <input type="radio" name="payment_details" value="{{ card.pk }}">
+                <div>
+                    <div>{{ card.card_holder_name }}</div>
+                    <div>{{ card.card_number }}</div>
+                    <div>{{ card.card_expiry_date }}</div>
+                </div>
+            </label>
+        {% endfor %}
+    </form>
+    <a href="{% url 'checkout:payment_create' %}" class="button-secondary">Add new credit card</a>
+    <button type="submit" form="payment-form" class="button">Place order</button>
 {% endblock %}

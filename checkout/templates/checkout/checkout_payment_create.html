@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2 class="text-4xl mb-14">Add new credit card</h2>
+    <form method="POST" id="payment-create-form">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+    <a href="{% url 'checkout:payment' %}" class="button-secondary">Select credit card from list</a>
+    <button type="submit" class="button mt-5" form="payment-create-form">Place order</button>
+{% endblock %}

@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import generic
 
-from accounts.forms import ShippingDetailsSelectForm, ShippingDetailsCreateForm
+from accounts.forms import ShippingDetailsSelectForm, ShippingDetailsCreateForm, PaymentDetailsCreateForm, \
+    PaymentDetailsSelectForm
 from accounts.models import Order, PurchasedItem
 
 
@@ -33,7 +34,7 @@ class CreateOrderMixin:
         return reverse('checkout:order_confirmation')
 
 
-class CheckoutShippingDetailsSelectView(LoginRequiredMixin, CreateOrderMixin, generic.FormView):
+class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
     template_name = 'checkout/checkout_address.html'
     form_class = ShippingDetailsSelectForm
 
@@ -47,11 +48,12 @@ class CheckoutShippingDetailsSelectView(LoginRequiredMixin, CreateOrderMixin, ge
         # Save to Django session
         self.request.session['checkout_address_id'] = selected_address.id
         print('selected_address:', selected_address)
+        print('address id saved in session', self.request.session['checkout_address_id'])
 
-        return redirect(self.create_order_and_clear_cart())
+        return redirect('checkout:payment')
 
 
-class CheckoutShippingDetailsCreateView(LoginRequiredMixin, CreateOrderMixin, generic.CreateView):
+class CheckoutShippingDetailsCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = ShippingDetailsCreateForm
     template_name = 'checkout/checkout_address_create.html'
 
@@ -61,12 +63,42 @@ class CheckoutShippingDetailsCreateView(LoginRequiredMixin, CreateOrderMixin, ge
 
         self.request.session['checkout_address_id'] = self.object.id
         print('created_address:', self.object.id)
+        print('address id saved in session', self.request.session['checkout_address_id'])
+
+        return redirect('checkout:payment')
+
+
+class CheckoutPaymentDetailsSelectView(LoginRequiredMixin, CreateOrderMixin, generic.FormView):
+    form_class = PaymentDetailsSelectForm
+    template_name = 'checkout/checkout_payment.html'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        selected_payment_details = form.cleaned_data['payment_details']
+        self.request.session['checkout_payment_id'] = selected_payment_details.id
+        print('selected payment details', selected_payment_details)
+        print('payment id saved in session', self.request.session['checkout_payment_id'])
 
         return redirect(self.create_order_and_clear_cart())
 
 
-class CheckoutPaymentView(LoginRequiredMixin, generic.TemplateView):
-    template_name = 'checkout/checkout_payment.html'
+class CheckoutPaymentDetailsCreateView(LoginRequiredMixin, CreateOrderMixin, generic.CreateView):
+    template_name = 'checkout/checkout_payment_create.html'
+    form_class = PaymentDetailsCreateForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        self.object = form.save()
+
+        self.request.session['checkout_payment_id'] = self.object.id
+        print('created_payment_details:', self.object.id)
+        print('payment id saved in session', self.request.session['checkout_payment_id'])
+
+        return redirect(self.create_order_and_clear_cart())
 
 
 class OrderConfirmationView(LoginRequiredMixin, generic.TemplateView):

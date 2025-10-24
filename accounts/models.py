@@ -33,9 +33,24 @@ class ShippingDetails(StatusMixin, models.Model):
         super().save(*args, **kwargs)
 
 
+class PaymentDetails(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    card_holder_name = models.CharField(max_length=50)
+    card_number = models.CharField(max_length=20)
+    card_expiry_date = models.DateField()
+    card_security_code = models.CharField(max_length=3)
+
+    class Meta:
+        verbose_name_plural = "Payment Details"
+
+    def __str__(self):
+        return f'credit card belongs to: {self.card_holder_name}'
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     shipping_details = models.ForeignKey(ShippingDetails, on_delete=models.PROTECT)
+    payment_details = models.ForeignKey(PaymentDetails, on_delete=models.PROTECT)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
