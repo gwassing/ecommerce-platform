@@ -44,7 +44,7 @@ class PaymentDetails(models.Model):
         verbose_name_plural = "Payment Details"
 
     def __str__(self):
-        return f'credit card belongs to: {self.card_holder_name}'
+        return f"{self.card_holder_name} - {self.card_number}"
 
     def get_masked_card_number(self):
         return '**** **** **** ' + self.card_number[-4:]

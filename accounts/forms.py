@@ -42,6 +42,11 @@ class PaymentDetailsCreateForm(forms.ModelForm):
         model = PaymentDetails
         exclude = ['user']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['card_expiry_date'].input_formats = ['%m/%y', '%m/%Y']
+        self.fields['card_expiry_date'].error_messages['invalid'] = 'Please enter the expiry date in MM/YY format'
+
 
 class PaymentDetailsSelectForm(forms.Form):
     payment_details = forms.ModelChoiceField(

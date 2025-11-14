@@ -10,7 +10,7 @@
                 <div>
                     <div>{{ card.card_holder_name }}</div>
                     <div>{{ card.get_masked_card_number }}</div>
-                    <div>valid until {{ card.card_expiry_date }}</div>
+                    <div>valid until {{ card.card_expiry_date|date:"m/y" }}</div>
                 </div>
             </label>
         {% endfor %}
