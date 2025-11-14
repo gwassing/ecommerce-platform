@@ -11,12 +11,14 @@ from accounts.models import Order, PurchasedItem
 class CreateOrderMixin:
     def create_order_and_clear_cart(self):
         address_id = self.request.session.get('checkout_address_id')
+        payment_id = self.request.session.get('checkout_payment_id')
 
         user = self.request.user
         # create an order with the user's shipping details
         order = Order.objects.create(
             user=user,
-            shipping_details_id=address_id
+            shipping_details_id=address_id,
+            payment_details_id=payment_id
         )
 
         # transform user's cart items into purchased items and add to order object
