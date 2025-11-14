@@ -5,7 +5,9 @@
         {% csrf_token %}
         {{ form }}
     </form>
-    <a href="{% url "checkout:address" %}" class="button-secondary">Select address from list</a>
+    {% if shipping_details %}
+        <a href="{% url "checkout:address" %}" class="button-secondary">Select address from list</a>
+    {% endif %}
     <button type="submit" form="address-create-form" class="button mt-5">
         Next
     </button>

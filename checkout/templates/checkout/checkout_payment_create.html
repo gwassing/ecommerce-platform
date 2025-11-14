@@ -5,6 +5,8 @@
         {% csrf_token %}
         {{ form }}
     </form>
-    <a href="{% url 'checkout:payment' %}" class="button-secondary">Select credit card from list</a>
+    {% if payment_details %}
+        <a href="{% url 'checkout:payment' %}" class="button-secondary">Select credit card from list</a>
+    {% endif %}
     <button type="submit" class="button mt-5" form="payment-create-form">Place order</button>
 {% endblock %}

@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import generic
 
 from accounts.forms import ShippingDetailsSelectForm, ShippingDetailsCreateForm, PaymentDetailsCreateForm, \
     PaymentDetailsSelectForm
-from accounts.models import Order, PurchasedItem
+from accounts.models import Order, PurchasedItem, ShippingDetails, PaymentDetails
 
 
 class CreateOrderMixin:
@@ -40,6 +40,11 @@ class CheckoutShippingDetailsSelectView(LoginRequiredMixin, generic.FormView):
     template_name = 'checkout/checkout_address.html'
     form_class = ShippingDetailsSelectForm
 
+    def get(self, request, *args, **kwargs):
+        if not ShippingDetails.objects.filter(user=request.user).exists():
+            return redirect('checkout:address_create')
+        return super().get(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
@@ -65,14 +70,24 @@ class CheckoutShippingDetailsCreateView(LoginRequiredMixin, generic.CreateView):
 
         self.request.session['checkout_address_id'] = self.object.id
         print('created_address:', self.object.id)
-        print('address id saved in session', self.request.session['checkout_address_id'])
+        print('address id saved in session:', self.request.session['checkout_address_id'])
 
         return redirect('checkout:payment')
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs) | {
+            'shipping_details': ShippingDetails.objects.filter(user=self.request.user)
+        }
 
 
 class CheckoutPaymentDetailsSelectView(LoginRequiredMixin, CreateOrderMixin, generic.FormView):
     form_class = PaymentDetailsSelectForm
     template_name = 'checkout/checkout_payment.html'
+
+    def get(self, request, *args, **kwargs):
+        if not PaymentDetails.objects.filter(user=request.user).exists():
+            return redirect('checkout:payment_create')
+        return super().get(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -101,6 +116,11 @@ class CheckoutPaymentDetailsCreateView(LoginRequiredMixin, CreateOrderMixin, gen
         print('payment id saved in session', self.request.session['checkout_payment_id'])
 
         return redirect(self.create_order_and_clear_cart())
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs) | {
+            "payment_details": PaymentDetails.objects.filter(user=self.request.user)
+        }
 
 
 class OrderConfirmationView(LoginRequiredMixin, generic.TemplateView):
