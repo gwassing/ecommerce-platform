@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views import generic
 
@@ -33,6 +35,21 @@ class CreateOrderMixin:
 
         # empty cart
         user.cart.cart_items.all().delete()
+
+        # send email
+        message = render_to_string('emails/order_confirmation.txt', {
+            'user': user,
+            'order': order,
+            'purchased_items': order.purchased_items.all(),
+        })
+
+        send_mail(
+            "Order confirmed!",
+            message,
+            "info@gabylando.com",
+            [user.email],
+        )
+
         return reverse('checkout:order_confirmation')
 
 

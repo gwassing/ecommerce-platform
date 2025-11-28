@@ -1,0 +1,13 @@
+Hi {{ user.username}},
+
+Thanks for your order! Your order id is #{{ order.id }}.
+
+Order details:
+{% for item in purchased_items %}
+{{ item.product }} x {{ item.quantity }}
+{% endfor %}
+
+We will inform you once your order ships.
+
+
+The Gabylando team 🩷
