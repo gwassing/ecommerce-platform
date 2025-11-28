@@ -10,29 +10,24 @@ body {
     text-decoration: underline;
     text-decoration-color: #FEA520;
     text-decoration-thickness: 3px;
-    text-underline-offset: 4px;
+    text-underline-offset: 6px;
 }
 
 .button {
-    background-color: #1FD6A2;
+    background-color: #60A0FB;
     padding: 8px 12px;
     border-radius: 8px;
 }
 
 .button:hover{
-    background-color: #19B387;
-}
-
-.button-secondary {
-    border: 2px solid #1FD6A2;
-    padding: 8px 12px;
-    border-radius: 8px;
-    color: #1FD6A2;
+    background-color:#74ACFB;
 }
 
 .button-secondary:hover {
-    border: 2px solid #19B387;
-    color: #19B387;
+    text-decoration: underline;
+    text-decoration-color: #60A0FB;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 6px;
 }
 
 form div{

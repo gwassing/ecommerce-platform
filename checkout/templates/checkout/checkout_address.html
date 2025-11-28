@@ -7,7 +7,7 @@
             <div>{{ form.shipping_details.errors }}</div>
         {% endif %}
         {% for address in form.fields.shipping_details.queryset %}
-            <label class="flex gap-x-5 items-center mb-12">
+            <label class="flex gap-x-5 items-center">
                 <input type="radio"
                        name="shipping_details"
                        value="{{ address.pk }}">
@@ -19,8 +19,10 @@
             </label>
         {% endfor %}
     </form>
-    <a href="{% url "checkout:address_create" %}" class="button-secondary">Add new address</a>
-    <button type="submit" form="address-form" class="button mt-5">
-        Next
-    </button>
+    <div class="flex items-center gap-x-8 mt-12">
+        <a href="{% url "checkout:address_create" %}" class="button-secondary">Add new address</a>
+        <button type="submit" form="address-form" class="button">
+            Next
+        </button>
+    </div>
 {% endblock %}
