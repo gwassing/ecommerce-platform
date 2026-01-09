@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='product',
-            constraint=models.CheckConstraint(check=models.Q(('price__gte', 0.01)), name='positive_price'),
+            constraint=models.CheckConstraint(condition=models.Q(('price__gte', 0.01)), name='positive_price'),
         ),
     ]

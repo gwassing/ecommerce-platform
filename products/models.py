@@ -24,7 +24,7 @@ class Product (StatusMixin, models.Model):
 
     class Meta:
         constraints = [
-            CheckConstraint(check=Q(price__gte=0.01), name='positive_price')
+            CheckConstraint(condition=Q(price__gte=0.01), name='positive_price')
         ]
 
 
