@@ -1,10 +1,8 @@
 from pathlib import Path
 import environ
-import dj_database_url
 import os
 import mimetypes
 import logging
-import librato
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +22,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool('DEBUG')
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -107,15 +105,9 @@ WSGI_APPLICATION = 'ecommerce_platform.wsgi.application'
 
 # Default database configuration for local development
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-    }
+    'default': env.db('DATABASE_URL')
 }
-if DEBUG:
-    ssl_require = False
-else:
-    ssl_require = True
-DATABASES['default'].update(dj_database_url.config(conn_max_age=600, ssl_require=ssl_require))
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -193,6 +185,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "index"
 LOGOUT_REDIRECT_URL = "index"
 
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -237,22 +230,16 @@ LOGGING = {
     }
 }
 
-LIBRATO_USER = os.environ.get('LIBRATO_USER', '')
-LIBRATO_TOKEN = os.environ.get('LIBRATO_TOKEN', '')
-LIBRATO_SOURCE = os.environ.get('LIBRATO_SOURCE', 'django-app')
-
-librato_api = None
-if LIBRATO_USER and LIBRATO_TOKEN:
-    librato_api = librato.connect(LIBRATO_USER, LIBRATO_TOKEN)
 
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDISCLOUD_URL'),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
+      "default": {
+          "BACKEND": "django_redis.cache.RedisCache",
+          "LOCATION": "redis://127.0.0.1:6379/1",
+          "OPTIONS": {
+              "CLIENT_CLASS": "django_redis.client.DefaultClient",
+          }
+      }
+  }
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
