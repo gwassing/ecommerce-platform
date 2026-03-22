@@ -8,6 +8,7 @@ from django.views import generic
 from accounts.forms import ShippingDetailsSelectForm, ShippingDetailsCreateForm, PaymentDetailsCreateForm, \
     PaymentDetailsSelectForm
 from accounts.models import Order, PurchasedItem, ShippingDetails, PaymentDetails
+from checkout.tasks import send_order_confirmation
 
 
 class CreateOrderMixin:
@@ -36,19 +37,22 @@ class CreateOrderMixin:
         # empty cart
         user.cart.cart_items.all().delete()
 
-        # send email
         message = render_to_string('emails/order_confirmation.txt', {
             'user': user,
             'order': order,
             'purchased_items': order.purchased_items.all(),
         })
 
+        # send email sync
         send_mail(
             "Order confirmed!",
             message,
             "info@gabylando.com",
             [user.email],
         )
+
+        # send email async
+        send_order_confirmation.enqueue(message, user.email)
 
         return reverse('checkout:order_confirmation')
 

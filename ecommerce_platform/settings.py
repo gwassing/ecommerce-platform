@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'debug_toolbar',
     # 'django_extensions',
+    'django_tasks',
+    'django_rq',
+    'django_tasks_rq',
     'storages',
     'products.apps.ProductsConfig',
     'accounts',
@@ -71,7 +74,7 @@ def show_toolbar(request):
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
 }
 
 if DEBUG:
@@ -240,6 +243,26 @@ CACHES = {
           }
       }
   }
+
+
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks_rq.RQBackend",
+        "QUEUES": ["default"]
+    }
+}
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": "localhost",
+        "PORT": 6379,
+        "DB": 0,
+    }
+}
+
+RQ = {
+    "JOB_CLASS": "django_tasks_rq.Job",
+}
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
